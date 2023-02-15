@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"github.com/FactomProject/factomd/common/primitives"
 )
 
 const BASEURL = "https://api.openai.com/v1/"
@@ -34,11 +35,6 @@ type ChatGPTRequestBody struct {
 	TopP             int     `json:"top_p"`
 	FrequencyPenalty int     `json:"frequency_penalty"`
 	PresencePenalty  int     `json:"presence_penalty"`
-}
-type MyError struct {
-	Msg	string
-	File string
-	Line int
 }
 
 // Completions gtp文本模型回复
@@ -99,7 +95,7 @@ func Completions(msg string) (string, error) {
 	log.Printf("gpt response text: %s \n", reply)
 
 	if gptResponseBody.Error != nil {
-		return reply, &MyError{gptResponseBody.Error["message"], "", 0}
+		return reply, primitives.NewJSONError(-1001, gptResponseBody.Error["message"], nil)
 	}
 	return reply, nil
 }
