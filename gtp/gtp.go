@@ -35,6 +35,11 @@ type ChatGPTRequestBody struct {
 	FrequencyPenalty int     `json:"frequency_penalty"`
 	PresencePenalty  int     `json:"presence_penalty"`
 }
+type MyError struct {
+	Msg	string
+	File string
+	Line int
+}
 
 // Completions gtp文本模型回复
 //curl https://api.openai.com/v1/completions
@@ -94,7 +99,7 @@ func Completions(msg string) (string, error) {
 	log.Printf("gpt response text: %s \n", reply)
 
 	if gptResponseBody.Error != nil {
-		return reply, gptResponseBody.Error["message"].(string)
+		return reply, &MyError{gptResponseBody.Error["message"]}
 	}
 	return reply, nil
 }
