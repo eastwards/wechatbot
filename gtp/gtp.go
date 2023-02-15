@@ -3,11 +3,11 @@ package gtp
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/869413421/wechatbot/config"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"fmt"
 )
 
 const BASEURL = "https://api.openai.com/v1/"
@@ -20,7 +20,7 @@ type ChatGPTResponseBody struct {
 	Model   string                   `json:"model"`
 	Choices []map[string]interface{} `json:"choices"`
 	Usage   map[string]interface{}   `json:"usage"`
-	Error 	map[string]					 		 `json:error`
+	Error   map[string]interface{}   `json:"error"`
 }
 
 type ChoiceItem struct {
@@ -38,10 +38,10 @@ type ChatGPTRequestBody struct {
 }
 
 // Completions gtp文本模型回复
-//curl https://api.openai.com/v1/completions
-//-H "Content-Type: application/json"
-//-H "Authorization: Bearer your chatGPT key"
-//-d '{"model": "text-davinci-003", "prompt": "give me good song", "temperature": 0, "max_tokens": 7}'
+// curl https://api.openai.com/v1/completions
+// -H "Content-Type: application/json"
+// -H "Authorization: Bearer your chatGPT key"
+// -d '{"model": "text-davinci-003", "prompt": "give me good song", "temperature": 0, "max_tokens": 7}'
 func Completions(msg string) (string, error) {
 	requestBody := ChatGPTRequestBody{
 		Model:            "text-davinci-003",
@@ -95,7 +95,7 @@ func Completions(msg string) (string, error) {
 	log.Printf("gpt response text: %s \n", reply)
 
 	if gptResponseBody.Error != nil {
-		return reply, fmt.Errorf(gptResponseBody.Error["message"])
+		return reply, fmt.Errorf("error msg:%v", gptResponseBody.Error["message"].(string))
 	}
 	return reply, nil
 }
