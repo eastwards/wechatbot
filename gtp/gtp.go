@@ -19,7 +19,7 @@ type ChatGPTResponseBody struct {
 	Model   string                   `json:"model"`
 	Choices []map[string]interface{} `json:"choices"`
 	Usage   map[string]interface{}   `json:"usage"`
-	Error 	map[string]interface{}	 `json:error`
+	Error 	map[string]					 		 `json:error`
 }
 
 type ChoiceItem struct {
