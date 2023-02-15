@@ -31,7 +31,7 @@ func init() {
 // Handler 全局处理入口
 func Handler(msg *openwechat.Message) {
 	log.Printf("hadler Received msg : %v", msg.Content)
-	log.Printf("msg Status:%v, StatusNotifyCode:%v, CreateTime:%v", msg.Status, msg.StatusNotifyCode, msg.CreateTime);
+	log.Printf("msg Status:%v, StatusNotifyCode:%v, CreateTime:%v, Now:%v", msg.Status, msg.StatusNotifyCode, msg.CreateTime, log.Now);
 
 	// 如果已接受过，不再进行处理
 	if msg.IsNotify() {
