@@ -40,9 +40,16 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		return nil
 	}
 
-	// 替换掉@文本，然后向GPT发起请求
-	replaceText := "@" + sender.Self.NickName
-	requestText := strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
+	requestText = ""
+
+	if msg.IsAt() {
+		// 替换掉@文本，然后向GPT发起请求
+		replaceText := "@" + sender.Self.NickName
+		requestText := strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
+	} else {
+		requestText := strings.Split(msg.Content, "」")[1]
+	}
+
 	reply, err := gtp.Completions(requestText)
 	if err != nil {
 		log.Printf("gtp request error: %v \n", err)
