@@ -32,11 +32,17 @@ func init() {
 // Handler 全局处理入口
 func Handler(msg *openwechat.Message) {
 	log.Printf("hadler Received msg : %v", msg.Content)
-	log.Printf("msg Status:%v, StatusNotifyCode:%v, CreateTime:%v, Now:%v", msg.Status, msg.StatusNotifyCode, msg.CreateTime, time.Now().Unix());
+	log.Printf("msg Status:%v, StatusNotifyCode:%v, CreateTime:%v, SystemNow:%v", msg.Status, msg.StatusNotifyCode, msg.CreateTime, time.Now().Unix());
 
 	// 如果已接受过，不再进行处理
 	if msg.IsNotify() {
-		log.Printf("Notified.");
+		log.Printf("msg was Notified. never explain.");
+		return
+	}
+	
+	// 如果消息时间超过10秒，不再处理
+	if 10 <  time.Now().Unix() - msg.CreateTime {
+		log.Printf("msg was expired. never explain.");
 		return
 	}
 

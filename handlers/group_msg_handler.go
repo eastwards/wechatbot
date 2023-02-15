@@ -33,8 +33,10 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	group := openwechat.Group{sender}
 	log.Printf("Received Group %v Text Msg : %v", group.NickName, msg.Content)
 
-	// 不是@的不处理
-	if !msg.IsAt() {
+	quoteText := "「" + sender.Self.NickName
+
+	// 不是@的不处理或者不是引用机器人说的话
+	if !msg.IsAt() && !strings.HasPrefix(msg.Content, quoteText) {
 		return nil
 	}
 
