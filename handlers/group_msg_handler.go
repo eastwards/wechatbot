@@ -47,8 +47,9 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		replaceText := "@" + sender.Self.NickName
 		requestText = strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
 	} else {
-		string_slice := strings.Split(msg.Content, "」")
-		requestText = string_slice[1]
+		// string_slice := strings.Split(msg.Content, "」")
+		// requestText = string_slice[1]
+		requestText = msg.Content
 	}
 
 	reply, err := gtp.Completions(requestText)
