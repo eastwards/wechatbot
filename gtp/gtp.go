@@ -19,6 +19,7 @@ type ChatGPTResponseBody struct {
 	Model   string                   `json:"model"`
 	Choices []map[string]interface{} `json:"choices"`
 	Usage   map[string]interface{}   `json:"usage"`
+	Error 	map[string]interface{}	 `json:error`
 }
 
 type ChoiceItem struct {
@@ -89,6 +90,11 @@ func Completions(msg string) (string, error) {
 			break
 		}
 	}
+
 	log.Printf("gpt response text: %s \n", reply)
+
+	if gptResponseBody.Error != nil {
+		return reply, gptResponseBody.Error.message
+	}
 	return reply, nil
 }
