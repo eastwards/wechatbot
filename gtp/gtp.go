@@ -99,7 +99,7 @@ func Completions(msg string) (string, error) {
 	log.Printf("gpt response text: %s \n", reply)
 
 	if gptResponseBody.Error != nil {
-		return reply, &MyError{gptResponseBody.Error["message"]}
+		return reply, &MyError{gptResponseBody.Error["message"], "", 0}
 	}
 	return reply, nil
 }
