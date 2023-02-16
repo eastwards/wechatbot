@@ -48,12 +48,7 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		requestText = strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
 	} else {
 		stringSlice := strings.Split(msg.Content, "=>")
-		//result := strings.ReplaceAll(string_slice[0], "「", "")
-		//result = strings.ReplaceAll(result, "」", "")
-		//result := stringSlice[0]
-		//request := strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "")
-		//requestText = request + "\n" + result
-		requestText = strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "\n")
+		requestText = strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", " \r\n ")
 		requestText = strings.ReplaceAll(requestText, "」", "")
 	}
 
@@ -78,7 +73,7 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	reply = strings.TrimSpace(reply)
 	reply = strings.Trim(reply, "\n")
 	atText := "@" + groupSender.NickName
-	replyText := atText + " => " + requestText + reply
+	replyText := atText + " => " + requestText + " \r\n " + reply
 	_, err = msg.ReplyText(replyText)
 	if err != nil {
 		log.Printf("response group error: %v \n", err)

@@ -37,19 +37,14 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 
 	if !strings.HasPrefix(msg.Content, quoteText) {
 		stringSlice := strings.Split(msg.Content, "=>")
-		//stringSlice := strings.Split(msg.Content, "」")
-		//result := strings.ReplaceAll(string_slice[0], "「", "")
-		//result = strings.ReplaceAll(result, "」", "")
-		//result := stringSlice[0]
-		//request := strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "")
-		//requestText = request + "\n" + result
-		requestText = strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "\n")
+		requestText = strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", " \r\n ")
 		requestText = strings.ReplaceAll(requestText, "」", "")
+	} else {
+		// 向GPT发起请求
+		requestText = strings.TrimSpace(requestText)
+		requestText = strings.Trim(requestText, "\n")
 	}
 
-	// 向GPT发起请求
-	requestText = strings.TrimSpace(msg.Content)
-	requestText = strings.Trim(msg.Content, "\n")
 	reply, err := gtp.Completions(requestText)
 	if err != nil {
 		log.Printf("gtp request error: %v \n", err)
@@ -63,7 +58,7 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 回复用户
 	reply = strings.TrimSpace(reply)
 	reply = strings.Trim(reply, "\n")
-	reply = " => " + requestText + "\n" + reply
+	reply = " => " + requestText + " \r\n " + reply
 	_, err = msg.ReplyText(reply)
 	if err != nil {
 		log.Printf("response user error: %v \n", err)
