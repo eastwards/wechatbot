@@ -35,7 +35,7 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	quoteText := "「" + sender.Self.NickName
 	requestText := msg.Content
 
-	if !strings.HasPrefix(msg.Content, quoteText) {
+	if strings.HasPrefix(msg.Content, quoteText) {
 		stringSlice := strings.Split(msg.Content, "=>")
 		requestText = strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", " \r\n ")
 		requestText = strings.ReplaceAll(requestText, "」", "")
