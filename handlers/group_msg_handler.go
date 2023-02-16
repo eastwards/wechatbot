@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/eatmoreapple/openwechat"
 	"log"
-	"project/gtp"
+	"main/gtp"
 	"strings"
 )
 

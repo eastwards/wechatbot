@@ -1,7 +1,7 @@
 package main
 
 import (
-	"project/bootstrap"
+	"main/bootstrap"
 )
 
 func main() {
