@@ -47,7 +47,7 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 
 	// 回复用户
 	reply = strings.TrimSpace(reply)
-	reply = strings.Trim(reply, "\n")
+	reply = strings.Trim(requestText+reply, "\n")
 	_, err = msg.ReplyText(reply)
 	if err != nil {
 		log.Printf("response user error: %v \n", err)
