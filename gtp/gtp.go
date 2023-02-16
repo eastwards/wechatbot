@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/869413421/wechatbot/config"
 	"io/ioutil"
 	"log"
+	"main/config"
 	"net/http"
 )
 
