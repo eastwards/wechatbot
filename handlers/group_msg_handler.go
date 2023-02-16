@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"github.com/869413421/wechatbot/gtp"
 	"github.com/eatmoreapple/openwechat"
 	"log"
+	"project/gtp"
 	"strings"
 )
 
@@ -47,12 +47,14 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		replaceText := "@" + sender.Self.NickName
 		requestText = strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
 	} else {
-		stringSlice := strings.Split(msg.Content, "」")
+		stringSlice := strings.Split(msg.Content, "=>")
 		//result := strings.ReplaceAll(string_slice[0], "「", "")
 		//result = strings.ReplaceAll(result, "」", "")
-		result := stringSlice[0]
-		request := strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "")
-		requestText = request + "\n" + result
+		//result := stringSlice[0]
+		//request := strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "")
+		//requestText = request + "\n" + result
+		requestText = strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "\n")
+		requestText = strings.ReplaceAll(requestText, "」", "")
 	}
 
 	reply, err := gtp.Completions(requestText)
@@ -74,9 +76,9 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 
 	// 回复@我的用户
 	reply = strings.TrimSpace(reply)
-	reply = strings.Trim(requestText+reply, "\n")
+	reply = strings.Trim(reply, "\n")
 	atText := "@" + groupSender.NickName
-	replyText := atText + " ： " + reply
+	replyText := atText + " => " + requestText + reply
 	_, err = msg.ReplyText(replyText)
 	if err != nil {
 		log.Printf("response group error: %v \n", err)

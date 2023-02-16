@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"github.com/869413421/wechatbot/gtp"
 	"github.com/eatmoreapple/openwechat"
 	"log"
+	"project/gtp"
 	"strings"
 )
 
@@ -36,12 +36,15 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	requestText := msg.Content
 
 	if !strings.HasPrefix(msg.Content, quoteText) {
-		stringSlice := strings.Split(msg.Content, "」")
+		stringSlice := strings.Split(msg.Content, "=>")
+		//stringSlice := strings.Split(msg.Content, "」")
 		//result := strings.ReplaceAll(string_slice[0], "「", "")
 		//result = strings.ReplaceAll(result, "」", "")
-		result := stringSlice[0]
-		request := strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "")
-		requestText = request + "\n" + result
+		//result := stringSlice[0]
+		//request := strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "")
+		//requestText = request + "\n" + result
+		requestText = strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "\n")
+		requestText = strings.ReplaceAll(requestText, "」", "")
 	}
 
 	// 向GPT发起请求
@@ -59,7 +62,8 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 
 	// 回复用户
 	reply = strings.TrimSpace(reply)
-	reply = strings.Trim(requestText+reply, "\n")
+	reply = strings.Trim(reply, "\n")
+	reply = " => " + requestText + "\n" + reply
 	_, err = msg.ReplyText(reply)
 	if err != nil {
 		log.Printf("response user error: %v \n", err)

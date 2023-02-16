@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/869413421/wechatbot/bootstrap"
+	"project/bootstrap"
 )
 
 func main() {
