@@ -47,10 +47,11 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		replaceText := "@" + sender.Self.NickName
 		requestText = strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
 	} else {
-		string_slice := strings.Split(msg.Content, "」")
-		result := strings.ReplaceAll(string_slice[0], "「", "")
-		result = strings.ReplaceAll(string_slice[0], "」", "")
-		request := strings.ReplaceAll(string_slice[1], "- - - - - - - - - - - - - - -", "")
+		stringSlice := strings.Split(msg.Content, "」")
+		//result := strings.ReplaceAll(string_slice[0], "「", "")
+		//result = strings.ReplaceAll(result, "」", "")
+		result := stringSlice[0]
+		request := strings.ReplaceAll(stringSlice[1], "\n- - - - - - - - - - - - - - -\n", "")
 		requestText = request + "\n" + result
 	}
 
